@@ -95,3 +95,8 @@ def test_realtime_mode_does_not_block():
     env, res = run("vlm", "realtime", planner, episodes=4)
     assert len(res.episodes) == 4
     assert res.decisions and all(d["valid"] for d in res.decisions)
+
+
+def test_episode_records_keep_the_room_type():
+    env, res = run("fixed")
+    assert res.episodes and all(e["room_type"] == "R4x3" for e in res.episodes)

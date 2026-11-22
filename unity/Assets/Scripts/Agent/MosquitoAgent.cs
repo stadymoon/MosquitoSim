@@ -466,6 +466,7 @@ namespace MosquitoSim
                 j.BeginObject()
                     .Key("type").Value("episode_end")
                     .Key("room").Value(m_Area.roomIndex)
+                    .Key("room_type").Value(m_Area.Generator.Current.ToString())
                     .Key("episode").Value(m_EpisodeId)
                     .Key("stage").Value(m_Stage)
                     .Key("success").Value(m_Succeeded)

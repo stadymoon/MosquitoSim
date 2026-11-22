@@ -67,7 +67,8 @@ class FakeEnv:
             if self.steps[r] == self.spe // 2:
                 self._request(r, ["alert_start"])
             if self.steps[r] >= self.spe:
-                self.outbox.append({"type": "episode_end", "room": r, "episode": self.episode_id(r),
+                self.outbox.append({"type": "episode_end", "room": r, "room_type": "R4x3",
+                                    "episode": self.episode_id(r),
                                     "stage": 2, "success": r % 2 == 0, "caught": r % 2 == 1,
                                     "trapped": False, "timeout": False, "sim_time": self.spe * self.dt,
                                     "collisions": 0, "decisions": self.decision[r], "reward": 0.0})

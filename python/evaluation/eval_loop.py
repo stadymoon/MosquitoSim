@@ -133,7 +133,7 @@ class EvalLoop:
         self.scheduler.drop_room(room)
         if not self._counted(msg):
             return
-        rec = {k: msg.get(k) for k in ("episode", "room", "stage", "success", "caught", "trapped",
+        rec = {k: msg.get(k) for k in ("episode", "room", "room_type", "stage", "success", "caught", "trapped",
                                        "timeout", "sim_time", "collisions", "decisions", "reward")}
         rec["condition"] = self.cfg.condition
         rec["latency"] = str(self.cfg.latency)

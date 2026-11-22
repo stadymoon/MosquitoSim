@@ -128,7 +128,7 @@ def main() -> int:
         decisions_f.close()
         env.close()
 
-    fields = ["episode", "room", "stage", "condition", "latency", "success", "caught", "trapped",
+    fields = ["episode", "room", "room_type", "stage", "condition", "latency", "success", "caught", "trapped",
               "timeout", "sim_time", "collisions", "decisions", "reward"]
     with open(out / "episodes.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fields)

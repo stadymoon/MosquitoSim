@@ -132,7 +132,7 @@
 | Python → Unity | command | room, episode, decision, command. 다른 에피소드의 지시는 무시 |
 | Unity → Python | request | room, episode, decision, sim_time, stage, events, current_command, landed, alert, hand_active, skins[], candidates[], instruction, images[](VLM일 때), rule_command, fixed_command |
 | Unity → Python | decision | request와 같은 필드 + command (Unity 안 플래너의 로그) |
-| Unity → Python | episode_end | room, episode, success, caught, trapped, timeout, sim_time, collisions, decisions, reward |
+| Unity → Python | episode_end | room, room_type, episode, success, caught, trapped, timeout, sim_time, collisions, decisions, reward |
 
 에피소드 ID는 `<분할>/s<평가 시드>/r<방>e<방의 에피소드 번호>`입니다.
 
