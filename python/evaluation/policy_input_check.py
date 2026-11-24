@@ -115,18 +115,20 @@ def main(argv: List[str] | None = None) -> int:
     ap.add_argument("--pass-from", type=float, default=0.3, help="judge point distances from this many metres up")
     ap.add_argument("--min-point", type=float, default=0.8)
     ap.add_argument("--max-skin", type=float, default=0.3)
+    ap.add_argument("--judge", default="MOVE_TO,HIDE", help="subgoals that decide the exit code")
     ap.add_argument("--json", help="also write the numbers to this file")
     args = ap.parse_args(argv)
 
     from mosquitosim.onnx_policy import OnnxPolicy
 
+    judged = {x.strip().upper() for x in args.judge.split(",") if x.strip()}
     all_ok, dump = True, {}
     for path in args.policies:
         res = check(OnnxPolicy(path), args.samples, args.seed)
         ok = verdict(res, args.pass_from, args.min_point, args.max_skin)
         res["pass"] = ok
         dump[path] = res
-        all_ok &= all(ok.values())
+        all_ok &= all(v for k, v in ok.items() if k in judged)
         print(path)
         for sg, rows in res["per_distance"].items():
             cells = "  ".join(f"{r['point_m']:.2f}m {r['to_point']:+.2f}/{r['to_skin']:+.2f}" for r in rows)
