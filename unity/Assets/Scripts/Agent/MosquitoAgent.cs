@@ -79,6 +79,7 @@ namespace MosquitoSim
         /// <summary>Point the policy is steered to: a route waypoint for MOVE_TO / HIDE, else the target.</summary>
         public Vector3 GuideTarget => m_Guide.Active ? m_Guide.Waypoint : m_Tracker.Target;
         readonly PathGuide m_Guide = new PathGuide();
+        bool PointSubgoal => m_Tracker.Command.Subgoal == Subgoal.MoveTo || m_Tracker.Command.Subgoal == Subgoal.Hide;
         bool Guided => m_P.PathGuide && (m_Tracker.Command.Subgoal == Subgoal.MoveTo || m_Tracker.Command.Subgoal == Subgoal.Hide);
         public float FeedTimer => m_FeedTimer;
         public bool Landed => m_Motor != null && m_Motor.IsLanded;
@@ -162,7 +163,11 @@ namespace MosquitoSim
             var o = new ObsInput
             {
                 Velocity = m_Motor.Velocity,
-                TargetSkinRel = (m_TargetSkin != null ? m_TargetSkin.Center : m_Tracker.Target) - pos,
+                // Experiment (11/24): while the subgoal is a point (MOVE_TO / HIDE) the skin-target slots
+                // carry the subgoal target too. The policy steers along the sum of the two targets, so a
+                // stale skin there pulls it away from the point (docs/architecture.md, 11/24).
+                TargetSkinRel = (PointSubgoal ? GuideTarget
+                    : m_TargetSkin != null ? m_TargetSkin.Center : m_Tracker.Target) - pos,
                 SubgoalTargetRel = GuideTarget - pos,
                 HumanVelocity = dynamic ? human.Velocity : Vector3.zero,
                 HumanAlert = dynamic && human.Alert,
